@@ -1,0 +1,196 @@
+<dialog #dialog>
+  <div class="title-dialog">
+    <h1>Se ha agregado el producto con exito</h1>
+  </div>
+  <div class="padding-basic flex-container-evenly footer-container-dialog">
+    <div class="footer-dialog">
+      <button
+        type="button"
+        class="btn btn-outline-primary btn-blue fill-button"
+        (click)="closeModal()"
+      >
+        Cerrar
+      </button>
+    </div>
+  </div>
+</dialog>
+
+<div class="container card">
+  <div class="page-section-title">
+    <h2>Formulario de Registro</h2>
+  </div>
+  <form [formGroup]="formAddProduct" (submit)="addProduct()" class="flex-row">
+    <div class="flex-col-6 padding-basic">
+      <label for="id" class="form-label text-start">ID:</label>
+      <input
+        #uniqueId
+        type="text"
+        class="fill-input big-input"
+        placeholder="Ingrese identificador de producto"
+        [ngClass]="{ 'danger-input': id.invalid && (id.dirty || id.touched) }"
+        name="id"
+        formControlName="id"
+        required
+      />
+      <div *ngIf="id.invalid && (id.dirty || id.touched)" class="danger-text">
+        <div *ngIf="id.errors?.['used']">
+          El ID no valido, por favor usa otro.
+        </div>
+        <div *ngIf="id.errors?.['required']">El ID es obligatorio.</div>
+        <div *ngIf="id.errors?.['minlength']">
+          El ID debe tener al menos 3 caracteres de longitud.
+        </div>
+        <div *ngIf="id.errors?.['maxLength']">
+          El ID debe tener máximo 10 caracteres de longitud.
+        </div>
+      </div>
+    </div>
+    <div class="flex-col-6 padding-basic">
+      <label for="name" class="form-label text-start">Nombre:</label>
+      <input
+        type="text"
+        class="fill-input big-input"
+        placeholder="Ingrese nombre de producto"
+        [ngClass]="{
+          'danger-input': name.invalid && (name.dirty || name.touched)
+        }"
+        name="name"
+        formControlName="name"
+        required
+      />
+      <div
+        *ngIf="name.invalid && (name.dirty || name.touched)"
+        class="danger-text"
+      >
+        <div *ngIf="name.errors?.['required']">El Nombre es obligatorio.</div>
+        <div *ngIf="name.errors?.['minlength']">
+          El ID debe tener al menos 5 caracteres de longitud.
+        </div>
+        <div *ngIf="name.errors?.['maxLength']">
+          El ID debe tener máximo 100 caracteres de longitud.
+        </div>
+      </div>
+    </div>
+    <div class="flex-col-6 padding-basic">
+      <label for="description" class="form-label text-start"
+        >Descripción:</label
+      >
+      <input
+        type="text"
+        class="fill-input big-input"
+        placeholder="Ingrese descipción del producto"
+        [ngClass]="{
+          'danger-input':
+            description.invalid && (description.dirty || description.touched)
+        }"
+        name="description"
+        formControlName="description"
+        required
+      />
+      <div
+        *ngIf="
+          description.invalid && (description.dirty || description.touched)
+        "
+        class="danger-text"
+      >
+        <div *ngIf="description.errors?.['required']">
+          La descipción es obligatoria.
+        </div>
+        <div *ngIf="description.errors?.['minlength']">
+          El ID debe tener al menos 10 caracteres de longitud.
+        </div>
+        <div *ngIf="description.errors?.['maxLength']">
+          El ID debe tener máximo 200 caracteres de longitud.
+        </div>
+      </div>
+    </div>
+
+    <div class="flex-col-6 padding-basic">
+      <label for="logo" class="form-label text-start">Logo:</label>
+      <input
+        type="text"
+        class="fill-input big-input"
+        placeholder="Ingrese Logo del producto (Puede ser url a una imagen)"
+        [ngClass]="{
+          'danger-input': logo.invalid && (logo.dirty || logo.touched)
+        }"
+        name="logo"
+        formControlName="logo"
+        required
+      />
+      <div
+        *ngIf="logo.invalid && (logo.dirty || logo.touched)"
+        class="danger-text"
+      >
+        <div *ngIf="logo.errors?.['required']">El logo es obligatorio.</div>
+      </div>
+    </div>
+
+    <div class="flex-col-6 padding-basic">
+      <label for="date_release" class="form-label text-start"
+        >Fecha Liberación:</label
+      >
+      <input
+        type="date"
+        class="fill-input big-input"
+        placeholder="Ingrese fecha de liberación"
+        (ngModelChange)="changeDateRevision()"
+        [ngClass]="{
+          'danger-input':
+            date_release.invalid && (date_release.dirty || date_release.touched)
+        }"
+        name="date_release"
+        formControlName="date_release"
+        required
+      />
+      <div
+        *ngIf="
+          date_release.invalid && (date_release.dirty || date_release.touched)
+        "
+        class="danger-text"
+      >
+        <div *ngIf="date_release.errors?.['required']">
+          La fecha de liberación es obligatoria.
+        </div>
+        <div *ngIf="date_release.errors?.['gtToday']">
+          La fecha debe ser hoy o mayor.
+        </div>
+      </div>
+    </div>
+
+    <div class="flex-col-6 padding-basic">
+      <label for="date_revision" class="form-label text-start text-disabled"
+        >Fecha Liberación:</label
+      >
+      <input
+        type="date"
+        class="fill-input big-input"
+        placeholder="Ingrese fecha de libaración"
+        name="date_revision"
+        formControlName="date_revision"
+      />
+    </div>
+
+    <div class="flex-col-12 padding-basic flex-container-evenly mt-25 mb-20">
+      <div class="footer-form">
+        <button
+          type="button"
+          class="btn btn-outline-primary big-button btn-blue"
+          [disabled]="isLoading"
+          (click)="rebootForm()"
+        >
+          Reiniciar
+        </button>
+        <button
+          type="submit"
+          class="btn btn-outline-primary big-button btn-yellow"
+          [disabled]="isLoading"
+        >
+          <span *ngIf="!isLoading">&nbsp;Enviar</span>
+
+          <span *ngIf="isLoading">&nbsp;Enviando . . . </span>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

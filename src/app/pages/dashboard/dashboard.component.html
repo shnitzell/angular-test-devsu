@@ -1,0 +1,150 @@
+<div class="container spaced-items-horizontally">
+  <input
+    class="fill-input"
+    placeholder="Search..."
+    [(ngModel)]="productFilter"
+  />
+  <button class="btn btn-yellow" routerLink="/main/add-product">Agregar</button>
+</div>
+
+<dialog #dialog>
+  <div class="title-dialog">
+    <h1>¿Estás seguro de eliminar el producto {{ currentProduct.name }}?</h1>
+  </div>
+  <div class="padding-basic flex-container-evenly footer-container-dialog">
+    <div class="footer-dialog">
+      <button
+        class="btn btn-outline-primary btn-blue fill-button"
+        (click)="dialog.close()"
+      >
+        Cancelar
+      </button>
+      <button
+        class="btn btn-outline-primary btn-yellow fill-button"
+        (click)="delProduct()"
+      >
+        Confirmar
+      </button>
+    </div>
+  </div>
+</dialog>
+
+<div class="container card">
+  <div class="table-container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">Logo</th>
+          <th scope="col">Nombre del Producto</th>
+          <th scope="col">
+            Descripción
+            <span class="info-popover">
+              <p class="info">Se refiere a la intención del producto</p>
+            </span>
+          </th>
+          <th scope="col">
+            Fecha de liberación
+            <span class="info-popover">
+              <p class="info">
+                Esta es la fecha de cuando el producto tuvo apertura
+              </p>
+            </span>
+          </th>
+          <th scope="col">
+            Fecha de reestructuración
+            <span class="info-popover">
+              <p class="info">Esta es la fecha de cuando el producto vencerá</p>
+            </span>
+          </th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <ng-container
+        *ngIf="
+          productsList
+            | maxitems : maxItems
+            | filter : productFilter as resultSet
+        "
+      >
+        <tbody>
+          <tr *ngFor="let product of resultSet">
+            <td scope="col"></td>
+            <td style="padding: 12px">
+              <div class="avatar">
+                <span class="avatar-initial rounded-circle">
+                  <ng-container *ngIf="!product.logoIsImage; else logoImg">
+                    {{ product.logo | initials }}
+                  </ng-container>
+                  <ng-template #logoImg>
+                    <img [src]="product.logo" alt="Logo del producto" />
+                  </ng-template>
+                </span>
+              </div>
+            </td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.description }}</td>
+            <td>{{ product.date_release | date }}</td>
+            <td>{{ product.date_revision | date }}</td>
+            <td>
+              <button class="action-menu dropdown">
+                <div class="dropdown-content">
+                  <p (click)="shouldDelProduct(product)">Eliminar</p>
+                </div>
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="!resultSet?.length && !loading">
+            <td colspan="7">
+              <div class="alert-light text-center" role="alert">
+                No se encontraron resultados al buscar
+              </div>
+            </td>
+          </tr>
+          <ng-container *ngIf="loading">
+            <tr class="loading" *ngFor="let i of [1, 2, 3]">
+              <td scope="col"></td>
+              <td style="padding: 12px">
+                <div class="avatar">
+                  <span
+                    class="avatar-initial rounded-circle skeleton skeleton-text"
+                    style="width: 50px; height: 50px"
+                  >
+                  </span>
+                </div>
+              </td>
+              <td><label class="skeleton skeleton-text"></label></td>
+              <td><label class="skeleton skeleton-text"></label></td>
+              <td><label class="skeleton skeleton-text"></label></td>
+              <td><label class="skeleton skeleton-text"></label></td>
+              <td>
+                <div class="action-menu"></div>
+              </td>
+            </tr>
+          </ng-container>
+
+          <tr *ngIf="!productsList.length && !loading">
+            <td colspan="7">
+              <div class="alert-light text-center" role="alert">
+                No se encontraron resultados o no tienes permisos para verlos
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="4">{{ resultSet.length }} Resultados</td>
+            <td colspan="2"></td>
+            <td>
+              <select [(ngModel)]="maxItems">
+                <option [value]="5">5</option>
+                <option [value]="10">10</option>
+                <option [value]="20">20</option>
+              </select>
+            </td>
+          </tr>
+        </tfoot>
+      </ng-container>
+    </table>
+  </div>
+</div>
