@@ -25,7 +25,7 @@ describe('Dashboard Service', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should get ', () => {
+  it('should getProducts', () => {
     const requestToAPI = jest
       .spyOn(DashboardService.prototype, 'requestToAPI')
       .mockReturnValueOnce(of([]) as any);
@@ -40,10 +40,6 @@ describe('Dashboard Service', () => {
   });
 
   it('should addProduct ', () => {
-    const requestToAPI = jest
-      .spyOn(DashboardService.prototype, 'requestToAPI')
-      .mockReturnValueOnce(of([]) as any);
-
     const product: ProductType = {
       id: 'test',
       name: 'test',
@@ -53,6 +49,10 @@ describe('Dashboard Service', () => {
       date_revision: new Date('2012-12-12'),
     };
 
+    const requestToAPI = jest
+      .spyOn(DashboardService.prototype, 'requestToAPI')
+      .mockReturnValueOnce(of(product) as any);
+
     service.addProduct(product).subscribe({
       next: (value) => {
         expect(value).toHaveLength;
@@ -61,12 +61,20 @@ describe('Dashboard Service', () => {
 
     expect(requestToAPI).toHaveBeenCalled();
   });
-  it('should get ', () => {
+  it('should editProduct ', () => {
+    const product: ProductType = {
+      id: 'test',
+      name: 'test',
+      logo: 'logo-test',
+      description: 'test',
+      date_release: new Date('2012-12-12'),
+      date_revision: new Date('2012-12-12'),
+    };
     const requestToAPI = jest
       .spyOn(DashboardService.prototype, 'requestToAPI')
-      .mockReturnValueOnce(of([]) as any);
+      .mockReturnValueOnce(of([product]) as any);
 
-    service.getProducts().subscribe({
+    service.editProduct(product).subscribe({
       next: (value) => {
         expect(value).toHaveLength;
       },
@@ -74,12 +82,13 @@ describe('Dashboard Service', () => {
 
     expect(requestToAPI).toHaveBeenCalled();
   });
-  it('should get ', () => {
+
+  it('should delProduct ', () => {
     const requestToAPI = jest
       .spyOn(DashboardService.prototype, 'requestToAPI')
       .mockReturnValueOnce(of([]) as any);
 
-    service.getProducts().subscribe({
+    service.delProduct('id-test').subscribe({
       next: (value) => {
         expect(value).toHaveLength;
       },
