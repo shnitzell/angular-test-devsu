@@ -4,6 +4,7 @@ import {
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
+import { ProductType } from '../../models/shared-models';
 
 import { DashboardService } from './dashboard.service';
 
@@ -26,7 +27,56 @@ describe('Dashboard Service', () => {
 
   it('should get ', () => {
     const requestToAPI = jest
-      .spyOn(DashboardService, 'requestToAPI')
+      .spyOn(DashboardService.prototype, 'requestToAPI')
+      .mockReturnValueOnce(of([]) as any);
+
+    service.getProducts().subscribe({
+      next: (value) => {
+        expect(value).toHaveLength;
+      },
+    });
+
+    expect(requestToAPI).toHaveBeenCalled();
+  });
+
+  it('should addProduct ', () => {
+    const requestToAPI = jest
+      .spyOn(DashboardService.prototype, 'requestToAPI')
+      .mockReturnValueOnce(of([]) as any);
+
+    const product: ProductType = {
+      id: 'test',
+      name: 'test',
+      logo: 'logo-test',
+      description: 'test',
+      date_release: new Date('2012-12-12'),
+      date_revision: new Date('2012-12-12'),
+    };
+
+    service.addProduct(product).subscribe({
+      next: (value) => {
+        expect(value).toHaveLength;
+      },
+    });
+
+    expect(requestToAPI).toHaveBeenCalled();
+  });
+  it('should get ', () => {
+    const requestToAPI = jest
+      .spyOn(DashboardService.prototype, 'requestToAPI')
+      .mockReturnValueOnce(of([]) as any);
+
+    service.getProducts().subscribe({
+      next: (value) => {
+        expect(value).toHaveLength;
+      },
+    });
+
+    expect(requestToAPI).toHaveBeenCalled();
+  });
+  it('should get ', () => {
+    const requestToAPI = jest
+      .spyOn(DashboardService.prototype, 'requestToAPI')
       .mockReturnValueOnce(of([]) as any);
 
     service.getProducts().subscribe({
