@@ -42,6 +42,19 @@ export class DashboardService extends ApiService {
     });
   }
 
+  editProduct(product: ProductType) {
+    const headers = {
+      authorId: environment.authorId,
+    };
+    return this.requestToAPI<ProductType[]>(`${this.apiURL}/bp/products`, {
+      headers: headers,
+      method: 'PUT',
+      body: product,
+      shouldLoad: false,
+      shouldShowError: false,
+    });
+  }
+
   getProducts() {
     const headers = {
       authorId: environment.authorId,

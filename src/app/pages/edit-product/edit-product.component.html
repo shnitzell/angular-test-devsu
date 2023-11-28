@@ -1,6 +1,6 @@
 <dialog #dialog>
   <div class="title-dialog">
-    <h1>Se ha agregado el producto con exito</h1>
+    <h1>Se ha editado el producto con exito</h1>
   </div>
   <div class="padding-basic flex-container-evenly footer-container-dialog">
     <div class="footer-dialog">
@@ -17,9 +17,9 @@
 
 <div class="container card">
   <div class="page-section-title">
-    <h2>Formulario de Registro</h2>
+    <h2>Formulario de Edición</h2>
   </div>
-  <form [formGroup]="formAddProduct" (submit)="addProduct()" class="flex-row">
+  <form [formGroup]="formEditProduct" (submit)="editProduct()" class="flex-row">
     <div class="flex-col-6 padding-basic">
       <label for="id" class="form-label text-start">ID:</label>
       <input
@@ -27,23 +27,9 @@
         type="text"
         class="fill-input big-input"
         placeholder="Ingrese identificador de producto"
-        [ngClass]="{ 'danger-input': id.invalid && (id.dirty || id.touched) }"
         name="id"
         formControlName="id"
-        required
       />
-      <div *ngIf="id.invalid && (id.dirty || id.touched)" class="danger-text">
-        <div *ngIf="id.errors?.['used']">
-          El ID no valido, por favor usa otro.
-        </div>
-        <div *ngIf="id.errors?.['required']">El ID es obligatorio.</div>
-        <div *ngIf="id.errors?.['minlength']">
-          El ID debe tener al menos 3 caracteres de longitud.
-        </div>
-        <div *ngIf="id.errors?.['maxLength']">
-          El ID debe tener máximo 10 caracteres de longitud.
-        </div>
-      </div>
     </div>
     <div class="flex-col-6 padding-basic">
       <label for="name" class="form-label text-start">Nombre:</label>

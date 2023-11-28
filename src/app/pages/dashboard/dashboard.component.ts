@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { ProductType } from '../../../models/shared-models';
 import { DashboardService } from '../../../services/pages-services/dashboard.service';
 
@@ -20,7 +21,7 @@ export class DashboardComponent implements OnInit {
 
   @ViewChild('dialog') dialog: any;
 
-  constructor(private service: DashboardService) {}
+  constructor(private service: DashboardService, private route: Router) {}
 
   ngOnInit(): void {
     this.loading = true;
@@ -38,6 +39,11 @@ export class DashboardComponent implements OnInit {
   shouldDelProduct(product: ProductType) {
     this.currentProduct = product;
     this.dialog.nativeElement.showModal();
+  }
+
+  shouldEditProduct(product: ProductType) {
+    const editUrl = `/main/edit-product/${product.id}`;
+    this.route.navigate([editUrl]);
   }
 
   delProduct() {
